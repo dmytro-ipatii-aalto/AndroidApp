@@ -25,6 +25,12 @@ if [ "$COMMIT_SOURCE" != "" ] && [ "$COMMIT_SOURCE" != "message" ]; then
   exit 0
 fi
 
+# Allow override via env variable
+if [ "$ALLOW_NO_JIRA" = "1" ]; then
+  echo "⚠️  Proceeding without Jira ID (ALLOW_NO_JIRA=1)"
+  exit 0
+fi
+
 BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null)
 
 # Match Jira issue ID pattern: RED<digits> optionally followed by -<digits> (e.g., RED00211, RED00211-69)
@@ -42,14 +48,6 @@ if [ -n "$ISSUE_ID" ]; then
   echo "$ISSUE_ID: $COMMIT_MSG" > "$COMMIT_MSG_FILE"
 else
 
-  COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
-  # ==========================================
-  # Allow override with NO-JIRA prefix
-  # ==========================================
-  if echo "$COMMIT_MSG" | grep -qE '^NO-JIRA:'; then
-    echo "⚠️  Proceeding without Jira ID (NO-JIRA prefix detected)"
-    exit 0
-  fi
 
   # No Jira issue ID found in branch name
   echo ""
