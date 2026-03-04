@@ -50,6 +50,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     val platformName = platform.getPlatformName()
     val platformVersion = platform.getPlatformVersion()
 
+    println("Print some bug")
     Column(
         modifier,
         verticalArrangement = Arrangement.Center,
