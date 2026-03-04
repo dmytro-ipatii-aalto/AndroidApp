@@ -1,0 +1,4 @@
+prepare-commit-msg:
+    scripts:
+        'prepend-jira-id':
+            runner: sh
