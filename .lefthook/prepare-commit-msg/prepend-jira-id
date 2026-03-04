@@ -41,19 +41,14 @@ if [ -n "$ISSUE_ID" ]; then
   # Prepend the issue ID to the commit message
   echo "$ISSUE_ID: $COMMIT_MSG" > "$COMMIT_MSG_FILE"
 else
-  # -----------------------------
-  # Detect interactive terminal
-  # -----------------------------
-  is_interactive() {
-    [ -n "$PS1" ] && \
-    [ -t 0 ] && \
-    [ -t 1 ] && \
-    [ "$CI" != "true" ]
-  }
-
+  # No Jira issue ID found in branch name
+  echo ""
+  echo "⚠️  WARNING: No Jira issue ID found in branch '$BRANCH'."
+  echo "   Expected pattern: RED<digits> or RED<digits>-<digits> (e.g., RED00211, RED00211-69)"
   echo ""
 
-  if is_interactive; then
+  # Check if running in an interactive terminal
+  if [ -t 0 ] 2>/dev/null; then
     # Interactive terminal: ask for confirmation
     echo "   Options:"
     echo "     y - Proceed without Jira ID"
@@ -66,19 +61,7 @@ else
     echo "     PowerShell:  \$env:HUSKY = \"0\"; git commit -m \"message\""
     echo "     CMD:         set HUSKY=0 && git commit -m \"message\""
     echo "     Bash/sh:     HUSKY=0 git commit -m \"message\""
-    echo ""
-    printf "   Continue without Jira ID? [y/N]: "
-    read -r REPLY < /dev/tty
-    case "$REPLY" in
-      [yY])
-        echo "   Proceeding without Jira ID..."
-        exit 0
-        ;;
-      *)
-        echo "   Commit aborted. Rename your branch and try again."
-        exit 1
-        ;;
-    esac
+    
   else
     # Non-interactive (GUI editor): block the commit
     echo "   Commit blocked. To fix this:"
@@ -91,5 +74,4 @@ else
     echo ""
     exit 1
   fi
-
 fi
