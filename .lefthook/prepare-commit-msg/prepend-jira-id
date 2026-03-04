@@ -61,7 +61,7 @@ else
     echo "     PowerShell:  \$env:HUSKY = \"0\"; git commit -m \"message\""
     echo "     CMD:         set HUSKY=0 && git commit -m \"message\""
     echo "     Bash/sh:     HUSKY=0 git commit -m \"message\""
-    exit 0
+    exit 1
 
   else
     # Non-interactive (GUI editor): block the commit
