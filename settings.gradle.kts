@@ -1,6 +1,3 @@
-import org.gradle.kotlin.dsl.maven
-import org.gradle.api.credentials.PasswordCredentials
-
 pluginManagement {
     repositories {
         google {
@@ -12,37 +9,30 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-
-//        maven {
-//            name = "GitHubPackages"
-//            url = uri("https://maven.pkg.github.com/dmytro-ipatii-aalto/KMPSharedLibrary")
-//            credentials(PasswordCredentials::class)
-////            credentials {
-////                username = providers.gradleProperty("githubPackagesUsername")
-////                    .orElse(providers.environmentVariable("USER_NAME"))
-////                    .get()
-////
-////                password = providers.gradleProperty("githubPackagesPassword")
-////                    .orElse(providers.environmentVariable("DEV_ACCESS_TOKEN"))
-////                    .get()
-////            }
-//        }
     }
 }
+
+plugins {
+    id("com.google.cloud.artifactregistry.gradle-plugin").version("2.2.5")
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        mavenCentral()
-        //mavenLocal()
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/dmytro-ipatii-aalto/KMPSharedLibrary")
-            credentials(PasswordCredentials::class)
+            url = uri("artifactregistry://europe-west1-maven.pkg.dev/staging-yomido/yomido-android")
+//            credentials(HttpHeaderCredentials::class) {
+//                name = "Authorization"
+//                value = "Bearer ${getGcloudAccessToken()}"
+//            }
+//            authentication {
+//                create<HttpHeaderAuthentication>("header")
+//            }
         }
+        mavenCentral()
     }
 }
 
 rootProject.name = "AndroidApp"
 include(":app")
- 

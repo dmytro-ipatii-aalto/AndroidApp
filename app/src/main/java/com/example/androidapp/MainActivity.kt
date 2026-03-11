@@ -20,8 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androidapp.ui.theme.AndroidAppTheme
-import com.example.shared.PlatformInfo
-
+import it.yomido.calculations.LibraryInfo
 
 
 
@@ -46,10 +45,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    val platform = PlatformInfo()
-    val platformName = platform.getPlatformName()
-    val platformVersion = platform.getPlatformVersion()
 
+
+    val library = LibraryInfo()
+    val libVersion = library.getLibraryVersion()
 
     Column(
         modifier,
@@ -57,22 +56,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-             "Hello, World!",
+             "Library version: $libVersion",
             fontWeight = FontWeight.Bold
         )
 
-        Text(
-            text = "Hello! This is the KMP Library designed for $platformName v.$platformVersion",
-            modifier = modifier,
-            textAlign = TextAlign.Center
-        )
 
-        Button(onClick = {
-            val platformName = platform.getPlatformName()
-            println("Platform name: $platformName")
-        }){
-            Text("Print details")
-        }
     }
 
 }
